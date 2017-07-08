@@ -1,0 +1,46 @@
+#!/bin/sh
+# Start/stop the mitto daemon.
+#
+### BEGIN INIT INFO
+# Provides:          mitto
+# Required-Start:    $syslog $time
+# Required-Stop:     $syslog $time
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: 
+# Description:       
+### END INIT INFO
+
+PATH=/bin:/usr/bin:/sbin:/usr/sbin
+DESC="mitto daemon"
+NAME=mitto
+DAEMON=/usr/sbin/mittod
+PIDFILE=/var/run/mittod.pid
+SCRIPTNAME=/etc/init.d/$NAME
+
+test -f $DAEMON || exit 0
+
+. /lib/lsb/init-functions
+
+case "$1" in
+	start)
+		log_daemon_msg "Starting $DESC" "$NAME"
+		$DAEMON &
+		echo $! > $PIDFILE
+		log_end_msg 0
+	;;
+	stop)
+		log_daemon_msg "Stopping $DESC" "$name"
+		kill `cat $PIDFILE`
+		rm $PIDFILE
+		log_end_msg 0
+	;;
+	status)
+		
+	;;
+	*)
+		log_action_msg "Usage: /etc/init.d/mitto {start|stop|status}"
+		exit 2
+	;;
+esac
+

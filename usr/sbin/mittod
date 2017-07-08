@@ -1,0 +1,24 @@
+#!/bin/sh
+
+while :; do
+	for ITEM in /var/spool/mitto/*; do
+		if [ ! -f $ITEM ]; then
+			continue
+		fi
+		ITEM_TIME=$(head -n 1 $ITEM)
+		ITEM_BODY=$(tail -n +2 $ITEM)
+		if [ $(date -d "$ITEM_TIME" +%s) -le $(date +%s) ]; then
+			echo "Triggering item $ITEM..."
+			for USER in $(users); do
+				echo "Notifying user $USER..."
+				su $USER -c "notify-send \"$ITEM_TIME\" \"$ITEM_BODY\""
+				su $USER -c "paplay /usr/share/mitto/normal.ogg &"
+			done
+			rm $ITEM
+		fi
+	done
+	sleep 1s
+done
+
+return 0
+

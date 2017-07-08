@@ -1,0 +1,18 @@
+#!/bin/sh
+
+if [ "$#" -lt 2 ]; then
+	echo "Usage: mitto <time> <body>"
+	exit 1
+fi
+
+date -d "$1" > /dev/null 2>&1
+if [ $? -ne 0 ]; then
+	echo "Invalid time"
+	exit 1
+fi
+
+DIR=/var/spool/mitto
+ITEM_NAME=$(cat /proc/sys/kernel/random/uuid)
+
+printf "$1\n$2" > $DIR/$ITEM_NAME || echo "Failed"
+
