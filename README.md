@@ -12,10 +12,11 @@ sudo make install
 
 ```sh
 mitto "2015-01-01 00:00" "Hello, 2015!"
+mitto "+2 minutes" "Hello, future!"
 ```
 
 ## Todo
 
-- Timestamps instead of formatted strings for items.
 - Urgency levels.
+- Per-user events.
 
