@@ -6,12 +6,13 @@ while :; do
 			continue
 		fi
 		ITEM_TIME=$(head -n 1 $ITEM)
+		ITEM_TIME_STRING=$(date -d "@$ITEM_TIME" +"%Y-%m-%d %H:%M:%S")
 		ITEM_BODY=$(tail -n +2 $ITEM)
-		if [ $(date -d "$ITEM_TIME" +%s) -le $(date +%s) ]; then
+		if [ $ITEM_TIME -le $(date +%s) ]; then
 			echo "Triggering item $ITEM..."
 			for USER in $(users); do
 				echo "Notifying user $USER..."
-				su $USER -c "notify-send \"$ITEM_TIME\" \"$ITEM_BODY\""
+				su $USER -c "notify-send \"$ITEM_TIME_STRING\" \"$ITEM_BODY\""
 				su $USER -c "paplay /usr/share/mitto/normal.ogg &"
 			done
 			rm $ITEM

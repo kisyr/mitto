@@ -13,6 +13,8 @@ fi
 
 DIR=/var/spool/mitto
 ITEM_NAME=$(cat /proc/sys/kernel/random/uuid)
+ITEM_TIME=$(date -d "$1" +%s)
+ITEM_BODY=$2
 
-printf "$1\n$2" > $DIR/$ITEM_NAME || echo "Failed"
+printf "%s\n%s\n" $ITEM_TIME $ITEM_BODY > $DIR/$ITEM_NAME || echo "Failed"
 
