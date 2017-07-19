@@ -14,7 +14,9 @@ fi
 DIR=/var/spool/mitto
 ITEM_NAME=$(cat /proc/sys/kernel/random/uuid)
 ITEM_TIME=$(date -d "$1" +%s)
+ITEM_TIME_STRING=$(date -d "@$ITEM_TIME" +"%Y-%m-%d %H:%M:%S")
 ITEM_BODY=$2
 
-printf "%s\n%s\n" $ITEM_TIME $ITEM_BODY > $DIR/$ITEM_NAME || echo "Failed"
+printf "$ITEM_TIME\n$ITEM_BODY\n" > $DIR/$ITEM_NAME || (echo "Failed" && exit 1)
+printf "$ITEM_NAME created with time $ITEM_TIME_STRING\n"
 
